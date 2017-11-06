@@ -1,4 +1,4 @@
-package bncngsnds;
+package midiIF;
 
 import javax.sound.midi.*;
 import java.io.File;

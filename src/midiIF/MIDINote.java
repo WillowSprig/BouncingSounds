@@ -1,4 +1,4 @@
-package bncngsnds;
+package midiIF;
 
 public class MIDINote{
 

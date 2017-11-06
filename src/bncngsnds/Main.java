@@ -1,5 +1,7 @@
 package bncngsnds;
 
+import midiIF.*;
+import musicPars.*;
 import java.io.File;
 
 public class Main {
@@ -10,6 +12,9 @@ public class Main {
         if(!midiFile.exists() || midiFile.isDirectory() || !midiFile.canRead()) {
             System.out.println("Error while trying to read MIDI file!");
         }
+
+
+
         MIDISequence sequence = new MIDISequence(midiFile);
         sequence.play();
 
