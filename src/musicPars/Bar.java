@@ -7,6 +7,7 @@ public class Bar {
     private int rhythmSeqLength;
     private int[] rhythmSequence;
     private int baseUnit;
+    private int noteCntr;
 
     public Bar(int inTST, int inTSB, int inBaseUnit, int inBarNo){
         this.timeSign = new TimeSign(inTST, inTSB);
@@ -29,20 +30,30 @@ public class Bar {
     }
 
     public double[] getRhythmSequenceSec(int tempo) {
-        double[] rhythmSeqSec = new double[rhythmSeqLength];
-        for (int i = 0; i < rhythmSeqLength; i++){
-            rhythmSeqSec[i] = rhythmSequence[i] * 60 / tempo;
+        double[] rhythmSeqSec = new double[noteCntr];
+        int j = 0, sumBeats = 1;
+        for (int i = 1; i < rhythmSeqLength; i++){
+            if (rhythmSequence[i] == 1)
+                rhythmSeqSec[j++] = sumBeats * 60 / tempo;
+            else
+                sumBeats++;
+            //endif
         }   //for
         return rhythmSeqSec;
     }
 
     public void randomiseRhythmSequence(){
+        noteCntr = 0;
         rhythmSequence[0] = 1;
         for (int i=1; i<rhythmSeqLength; i++) {
             if (i % baseUnit/timeSign.getTimeSignB() == 0)
                 rhythmSequence[i] = (int) Math.round(Math.random()+0.3);
             else
                 rhythmSequence[i] = (int) Math.round(Math.random());
+            //endif
+            if (rhythmSequence[i] == 1)
+                noteCntr++;
+            //endif
         }   //for
     }
 
