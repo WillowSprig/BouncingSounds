@@ -2,6 +2,7 @@ package musicPars;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class Bar {
 
@@ -9,8 +10,8 @@ public class Bar {
     private int barNo;
     private int noteCntr;
 
-    public Bar(int inTST, int inTSB, int inBarNo){
-        this.timeSign = new TimeSign(inTST, inTSB);
+    public Bar(TimeSign inTS, int inBarNo){
+        this.timeSign = inTS;
         this.barNo = inBarNo;
 
     }
@@ -23,16 +24,15 @@ public class Bar {
         return this.barNo;
     }
 
-    public void setTimeSign(int newTST, int newTSB){ this.timeSign.setTimeSign(newTST, newTSB); }
+    public void setTimeSign(int newTST, int newTSB){ timeSign.setTimeSign(newTST, newTSB); }
 
     public List<Integer> randomiseRhythmSequence(int baseUnit){
         try{
             int rhythmSeqLength = timeSign.getTimeSignT()*baseUnit/timeSign.getTimeSignB();
-
-            List<Integer> rhythmSequence = new ArrayList<>(rhythmSeqLength);
+            Vector<Integer> rhythmSequence = new Vector<>(rhythmSeqLength);
             noteCntr = 0;
-            rhythmSequence.set(0, 1);
-            for (int i=1; i<rhythmSeqLength; i++) {
+            //rhythmSequence.set(0, 1);
+            for (int i=0; i<rhythmSeqLength; i++) {
                 if (i % baseUnit/timeSign.getTimeSignB() == 0)
                     rhythmSequence.set(i, (int) Math.round(Math.random()+0.3));
                 else
