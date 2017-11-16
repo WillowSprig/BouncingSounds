@@ -26,7 +26,7 @@ public class Bar {
 
     public void setTimeSign(int newTST, int newTSB){ timeSign.setTimeSign(newTST, newTSB); }
 
-    public List<Integer> randomiseRhythmSequence(int baseUnit){
+    public Vector<Integer> randomiseRhythmSequence(int baseUnit){
         try{
             int rhythmSeqLength = timeSign.getTimeSignT()*baseUnit/timeSign.getTimeSignB();
             Vector<Integer> rhythmSequence = new Vector<>(rhythmSeqLength);
@@ -34,9 +34,11 @@ public class Bar {
             //rhythmSequence.set(0, 1);
             for (int i=0; i<rhythmSeqLength; i++) {
                 if (i % baseUnit/timeSign.getTimeSignB() == 0)
-                    rhythmSequence.set(i, (int) Math.round(Math.random()+0.3));
+                    //rhythmSequence.set(i, (int) Math.round(Math.random()+0.3));
+                    rhythmSequence.add((int) Math.round(Math.random()+0.3));
                 else
-                    rhythmSequence.set(i, (int) Math.round(Math.random()));
+                    //rhythmSequence.set(i, (int) Math.round(Math.random()));
+                    rhythmSequence.add((int) Math.round(Math.random()));
                 //endif
                 if (rhythmSequence.get(i) == 1)
                     noteCntr++;
@@ -49,6 +51,10 @@ public class Bar {
             System.out.println("Wrong time signature or base rhythmic unit - rhythm sequence length must be an integer value");
             return null;
         }
+    }
+
+    public void setRhythmSequence(){
+
     }
 
     public int getNoteCntr() { return this.noteCntr; }
