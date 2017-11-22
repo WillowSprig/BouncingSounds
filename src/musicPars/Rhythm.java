@@ -14,12 +14,14 @@ public class Rhythm {
     private Vector<Integer> rhythmSequence;
     private int baseUnit;
     private int noteSum;
+    private double noteProb;
 
-    public Rhythm(int inBaseUnit, int inTimeSignT, int inTimeSignB, int inTempo){
-        baseUnit = inBaseUnit;
+    public Rhythm(int baseUnit, int timeSignT, int timeSignB, int tempo, double noteProb){
+        this.baseUnit = baseUnit;
         noteSum = 0;
-        tempo = inTempo;
-        currTimeSign = new TimeSign(inTimeSignT, inTimeSignB);
+        this.tempo = tempo;
+        this.noteProb = noteProb;
+        currTimeSign = new TimeSign(timeSignT, timeSignB);
         //rhythmSeqLength = currTimeSign.getTimeSignT()*baseUnit/currTimeSign.getTimeSignB();
         bars = new ArrayList<>(numOfBars);
         int currBarNo = 1;
@@ -33,15 +35,18 @@ public class Rhythm {
         return this.rhythmSequence;
     }
 
-    public void setRhythmSequence(int[] inRhythmSequence) {
-
+    public void setRhythmSequence() {
+        for (Bar currBar : bars) {
+            rhythmSequence.addAll(currBar.setRhythmSequence());
+            noteSum += currBar.getNoteCntr();
+        } //for
     }
 
     public void randomiseRhythmSequence() {
         for (Bar currBar : bars){
-            currBar.randomiseRhythmSequence(baseUnit);
-            noteSum+=currBar.getNoteCntr();
-        }
+            rhythmSequence.addAll(currBar.randomiseRhythmSequence(baseUnit, noteProb));
+            noteSum += currBar.getNoteCntr();
+        } //for
     }
 
     public double[] getRhythmSequenceSec() {
@@ -58,4 +63,16 @@ public class Rhythm {
         }   //for
         return rhythmSeqSec;
     }
+
+    public int getNumOfBars() { return numOfBars; }
+
+    public TimeSign getCurrTimeSign() { return currTimeSign; }
+
+    public int getTempo() { return tempo; }
+
+    public int getBaseUnit() { return baseUnit; }
+
+    public int getNoteSum() { return noteSum; }
+
+    public double getNoteProb() { return noteProb; }
 }

@@ -10,10 +10,9 @@ public class Bar {
     private int barNo;
     private int noteCntr;
 
-    public Bar(TimeSign inTS, int inBarNo){
-        this.timeSign = inTS;
-        this.barNo = inBarNo;
-
+    public Bar(TimeSign timeSign, int barNo){
+        this.timeSign = timeSign;
+        this.barNo = barNo;
     }
 
     public void incBarNo(){
@@ -24,7 +23,13 @@ public class Bar {
         return this.barNo;
     }
 
+    public int getNoteCntr() { return this.noteCntr; }
+
     public void setTimeSign(int newTST, int newTSB){ timeSign.setTimeSign(newTST, newTSB); }
+
+    public TimeSign getTimeSign(){
+        return this.timeSign;
+    }
 
     public Vector<Integer> randomiseRhythmSequence(int baseUnit, double noteProb){
         if (baseUnit/timeSign.getTimeSignB() < 1) {
@@ -36,16 +41,15 @@ public class Bar {
             Vector<Integer> rhythmSequence = new Vector<>(rhythmSeqLength);
             noteCntr = 0;
             //rhythmSequence.set(0, 1);
-            double startProb = 0.3;
             for (int i=0; i<rhythmSeqLength; i++) {
                 if (i % baseUnit/timeSign.getTimeSignB() == 0)
                     //rhythmSequence.set(i, (int) Math.round(Math.random()+0.3));
-                    rhythmSequence.add((int) Math.round(Math.random()+noteProb+startProb));
+                    rhythmSequence.add((int) Math.round(Math.random()+noteProb));
                 else
                     //rhythmSequence.set(i, (int) Math.round(Math.random()));
-                    rhythmSequence.add((int) Math.round(Math.random()+noteProb));
+                    rhythmSequence.add((int) Math.round(Math.random()));
                 //endif
-                if (rhythmSequence.get(i) == 2)
+                if (rhythmSequence.get(i) == 1)
                     noteCntr++;
                 //endif
             }   //for
@@ -54,31 +58,22 @@ public class Bar {
         catch (ClassCastException cce){
             System.out.println("Wrong time signature or base rhythmic unit - rhythm sequence length must be an integer value");
             return null;
-        }
+        } //catch
     }
 
-    public void setRhythmSequence(){
+    public Vector<Integer> setRhythmSequence() {
         int baseUnit = 16;
-        int rhythmSeqLength = timeSign.getTimeSignT()*baseUnit/timeSign.getTimeSignB();
+        int rhythmSeqLength = timeSign.getTimeSignT() * baseUnit / timeSign.getTimeSignB();
         Vector<Integer> rhythmSequence = new Vector<>(rhythmSeqLength);
         noteCntr = 0;
-        for (int i=0; i<rhythmSeqLength ;i++) {
-            if (i % 4 == 0 || i % 4 == 2) {
-                rhythmSequence.add(2);
-                noteCntr++;
-            }
-            else if (i % 4 == 1)
+        for (int i = 0; i < rhythmSeqLength; i++) {
+            // sekwencja: cwiercnuta + 2 osemki
+            if (i % 8 == 0 || i % 8 == 4 || i % 8 == 6) {
                 rhythmSequence.add(1);
-            else
+                noteCntr++;
+            } else
                 rhythmSequence.add(0);
             //endif
-        }
+        } //for
     }
-
-    public int getNoteCntr() { return this.noteCntr; }
-
-    public TimeSign getTimeSign(){
-        return this.timeSign;
-    }
-
 }

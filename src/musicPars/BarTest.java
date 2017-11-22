@@ -4,8 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Time;
-import java.util.List;
+import java.util.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +36,7 @@ class BarTest {
     @Test
     void randomiseRhythmSequence() {
 
-        List<Integer> rhSeq = bar.randomiseRhythmSequence(16);
+        Vector<Integer> rhSeq = bar.randomiseRhythmSequence(16, 0);
         assertFalse(rhSeq.isEmpty());
         assertTrue(bar.getNoteCntr()>0);
     }
