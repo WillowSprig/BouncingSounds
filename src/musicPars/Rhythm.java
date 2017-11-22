@@ -43,9 +43,14 @@ public class Rhythm {
     }
 
     public void randomiseRhythmSequence() {
-        for (Bar currBar : bars){
+        for (Bar currBar : bars) {
+            try {
             rhythmSequence.addAll(currBar.randomiseRhythmSequence(baseUnit, noteProb));
             noteSum += currBar.getNoteCntr();
+            } //try
+            catch (IllegalArgumentException iae) {
+                System.out.println(iae);
+            }
         } //for
     }
 
