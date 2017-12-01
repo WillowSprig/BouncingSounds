@@ -1,5 +1,7 @@
 package midiIF;
 
+import musicPars.Rhythm;
+
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
@@ -8,32 +10,32 @@ public class MIDISequence implements Playable {
 
     private Sequencer sequencer;
     private Synthesizer synthesizer;
+    private Rhythm rhythm;
+    private Sequence midiSequence;
 
-    private File midifile;
+    public MIDISequence(Rhythm rhythm){
 
-    public MIDISequence(MIDINote[] notes){
+        try {
+            this.rhythm = rhythm;
+            midiSequence = new Sequence(Sequence.PPQ, rhythm.getTempo());
+        }
+        catch (InvalidMidiDataException imde){
+            System.out.println("MIDI data is invalid!");
+        }
     }
 
-    public MIDISequence(File inMidiFile){
-        this.midifile = inMidiFile;
-    }
-
-    //public void prepare(MIDINote[] notes){ - wersja docelowa
         public void prepare(){
         try {
             synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
 
-            sequencer.setSequence(MidiSystem.getSequence(midifile));
+            sequencer.setSequence(midiSequence);
         } //try
         catch (MidiUnavailableException mue){
             System.out.println("MIDI device is unavailable!");
         }
         catch (InvalidMidiDataException imde){
             System.out.println("MIDI data is invalid!");
-        }
-        catch (IOException ioe){
-            System.out.println("I/O error occured!");
         }
     }
 
