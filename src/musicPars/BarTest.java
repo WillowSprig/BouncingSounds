@@ -35,10 +35,23 @@ class BarTest {
 
     @Test
     void randomiseRhythmSequence() {
-
         Vector<Integer> rhSeq = bar.randomiseRhythmSequence(16, 0);
         assertFalse(rhSeq.isEmpty());
         assertTrue(bar.getNoteCntr()>0);
+        System.out.println(rhSeq);
+    }
+
+    @Test
+    void setRhythmSequence() {
+        Vector<Integer> rhSeq = bar.setRhythmSequence();
+        assertFalse(rhSeq.isEmpty());
+        assertTrue(rhSeq.get(0)==1);
+        assertTrue(rhSeq.get(2)==0);
+        assertTrue(rhSeq.get(4)==1);
+        assertTrue(rhSeq.get(6)==1);
+        assertTrue(rhSeq.get(8)==1);
+        assertTrue(rhSeq.get(7)==0);
+        assertTrue(bar.getNoteCntr()==4);
     }
 
     @AfterEach
