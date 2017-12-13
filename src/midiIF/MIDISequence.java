@@ -5,6 +5,7 @@ import musicPars.Rhythm;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 public class MIDISequence {
 
@@ -28,6 +29,16 @@ public class MIDISequence {
         try {
             synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
+            Vector<Integer> noteSequence = new Vector<>(rhythm.getNoteSum()*8);
+
+            int noteID=60;
+            int velocity=127;
+
+            for (int i=0; i<rhythm.getNoteSum(); i++){
+                MIDINote currNote=new MIDINote(noteID,rhythm.getRhytmSequence(i),velocity);
+                currNote.addNote(noteSequence);
+            }
+
 
             sequencer.setSequence(midiSequence);
         } //try

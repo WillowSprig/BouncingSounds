@@ -31,9 +31,8 @@ public class Rhythm {
         rhythmSequence = new Vector<>(1);
     }
 
-    public Vector<Integer> getRhythmSequence(){
-        return this.rhythmSequence;
-    }
+    public Vector<Integer> getRhythmSequence(){ return this.rhythmSequence; }
+    public int getRhytmSequence(int i) {return this.rhythmSequence.get(i);}
 
     public void setRhythmSequence() {
         for (Bar currBar : bars) {
