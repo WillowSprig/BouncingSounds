@@ -6,7 +6,7 @@ import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
 
-public class MIDISequence implements Playable {
+public class MIDISequence {
 
     private Sequencer sequencer;
     private Synthesizer synthesizer;
@@ -17,14 +17,14 @@ public class MIDISequence implements Playable {
 
         try {
             this.rhythm = rhythm;
-            midiSequence = new Sequence(Sequence.PPQ, rhythm.getTempo());
+            midiSequence = new Sequence(Sequence.PPQ, rhythm.getBaseUnit()/4);
         }
         catch (InvalidMidiDataException imde){
             System.out.println("MIDI data is invalid!");
         }
     }
 
-        public void prepare(){
+    public void prepare(){
         try {
             synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
@@ -64,7 +64,4 @@ public class MIDISequence implements Playable {
         }
     }
 
-    public void changeParams(){
-
-    }
 }
