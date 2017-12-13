@@ -9,13 +9,13 @@ public class MIDINote{
     private int duration;
     private int msg;
 
-    public void createNote(int noteID, int duration, int velocity){
+    public MIDINote(int noteID, int duration, int velocity){
         this.duration=duration;
         this.noteID=noteID;
         this.velocity=velocity;
     }
 
-    public void makeNote(Vector<Integer> noteList){
+    public void addNote(Vector<Integer> noteList){
         //noteOn
         msg=0x90;
         noteList.add(0);
