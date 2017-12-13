@@ -16,11 +16,11 @@ public class Rhythm {
     private int noteSum;
     private double noteProb;
 
-    public Rhythm(int baseUnit, int timeSignT, int timeSignB, int tempo, double noteProb){
+    public Rhythm(int baseUnit, int timeSignT, int timeSignB, int tempo){
         this.baseUnit = baseUnit;
         noteSum = 0;
         this.tempo = tempo;
-        this.noteProb = noteProb;
+        //this.noteProb = noteProb; //note probability
         currTimeSign = new TimeSign(timeSignT, timeSignB);
         //rhythmSeqLength = currTimeSign.getTimeSignT()*baseUnit/currTimeSign.getTimeSignB();
         bars = new ArrayList<>(numOfBars);
@@ -32,7 +32,7 @@ public class Rhythm {
     }
 
     public Vector<Integer> getRhythmSequence(){ return this.rhythmSequence; }
-    public int getRhytmSequence(int i) {return this.rhythmSequence.get(i);}
+    public int getRhythmSequence(int i) {return this.rhythmSequence.get(i);}
 
     public void setRhythmSequence() {
         for (Bar currBar : bars) {
@@ -78,5 +78,5 @@ public class Rhythm {
 
     public int getNoteSum() { return noteSum; }
 
-    public double getNoteProb() { return noteProb; }
+    //public double getNoteProb() { return noteProb; }
 }

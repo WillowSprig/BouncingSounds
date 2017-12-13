@@ -4,14 +4,10 @@ public class CLI implements UI{
 
 
     public CLI (){
-        setMelodyParams();
+        //setMelodyParams();
         setRhythmParams();
     }
 
-    @Override
-    public void setMelodyParams() {
-        System.out.println("Podaj klucz");
-    }
 
     @Override
     public void setRhythmParams() {
@@ -20,10 +16,6 @@ public class CLI implements UI{
 
     }
 
-    @Override
-    public void getMelodyParams() {
-
-    }
 
     @Override
     public void getRhythmParams() {

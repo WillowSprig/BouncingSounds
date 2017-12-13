@@ -13,12 +13,15 @@ public class MIDISequence {
     private Synthesizer synthesizer;
     private Rhythm rhythm;
     private Sequence midiSequence;
+    private Track track;
+    private MidiEvent event;
 
     public MIDISequence(Rhythm rhythm){
 
         try {
             this.rhythm = rhythm;
             midiSequence = new Sequence(Sequence.PPQ, rhythm.getBaseUnit()/4);
+            track = midiSequence.createTrack();
         }
         catch (InvalidMidiDataException imde){
             System.out.println("MIDI data is invalid!");
@@ -27,20 +30,22 @@ public class MIDISequence {
 
     public void prepare(){
         try {
-            synthesizer = MidiSystem.getSynthesizer();
+            //synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
             Vector<Integer> noteSequence = new Vector<>(rhythm.getNoteSum()*8);
+
+            sequencer.setTempoInBPM(rhythm.getTempo());
+
 
             int noteID=60;
             int velocity=127;
 
             for (int i=0; i<rhythm.getNoteSum(); i++){
-                MIDINote currNote=new MIDINote(noteID,rhythm.getRhytmSequence(i),velocity);
-                currNote.addNote(noteSequence);
+                MIDINote currNote=new MIDINote(noteID,rhythm.getRhythmSequence(i),velocity);
+                currNote.addNote(track,sequencer);
             }
-
-
             sequencer.setSequence(midiSequence);
+
         } //try
         catch (MidiUnavailableException mue){
             System.out.println("MIDI device is unavailable!");

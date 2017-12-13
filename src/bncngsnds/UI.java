@@ -2,8 +2,8 @@ package bncngsnds;
 
 public interface UI {
     void setRhythmParams();
-    void setMelodyParams();
+    //void setMelodyParams();
     void getRhythmParams();
-    void getMelodyParams();
+    //void getMelodyParams();
 //    void setProbabs();
 }
