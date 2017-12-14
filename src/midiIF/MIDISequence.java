@@ -34,19 +34,18 @@ public class MIDISequence {
         try {
             //synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
-            int[] noteSequence = new int[rhythm.getNoteSum()];
+            int[] noteSequence = rhythm.getRhythmSequenceTicks();
             shortMsg.setMessage(0xC0, 0x00, 0x00);
             event = new MidiEvent(shortMsg,(long)0);
-
-            sequencer.setTempoInBPM(rhythm.getTempo());
             track.add(event);
+            sequencer.setTempoInBPM(rhythm.getTempo());
 
             int noteID=60;
             int velocity=127;
-
+            MIDINote currNote=new MIDINote();
 
             for (int i=0; i<rhythm.getNoteSum(); i++){
-                MIDINote currNote=new MIDINote(noteID,noteSequence[i],velocity);
+                currNote.replace(noteID,noteSequence[i],velocity);
                 currNote.addNote(track,sequencer);
             }
             sequencer.setSequence(midiSequence);
