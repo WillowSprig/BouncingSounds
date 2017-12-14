@@ -13,6 +13,7 @@ public class MIDINote{
 
     public MIDINote(){
         msg = new ShortMessage();
+        position=0;
     }
 
     public void replace(int noteID, int duration, int velocity){
@@ -21,15 +22,15 @@ public class MIDINote{
         this.velocity=velocity;
     }
 
-    public void addNote(Track track, Sequencer sequencer) throws InvalidMidiDataException{
-        position = sequencer.getTickPosition();
+    public void addNote(Track track) throws InvalidMidiDataException{
         msg.setMessage(ShortMessage.NOTE_ON, 0, noteID, velocity);
         event = new MidiEvent(msg,position);
+        event.setTick(position);
         track.add(event);
         position = position + duration;
         msg.setMessage(ShortMessage.NOTE_OFF, 0, noteID, velocity);
         event = new MidiEvent(msg,position);
+        event.setTick(position);
         track.add(event);
-        sequencer.setTickPosition(position);
     }
 }
