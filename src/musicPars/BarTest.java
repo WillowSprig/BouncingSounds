@@ -43,7 +43,7 @@ class BarTest {
 
     @Test
     void setRhythmSequence() {
-        Vector<Integer> rhSeq = bar.setRhythmSequence();
+         Vector<Integer> rhSeq = bar.setRhythmSequence();
         assertFalse(rhSeq.isEmpty());
         assertTrue(rhSeq.get(0)==1);
         assertTrue(rhSeq.get(2)==0);

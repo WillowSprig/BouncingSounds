@@ -15,6 +15,7 @@ public class MIDISequence {
     private Sequence midiSequence;
     private Track track;
     private MidiEvent event;
+    private ShortMessage shortMsg;
 
     public MIDISequence(Rhythm rhythm){
 
@@ -22,6 +23,7 @@ public class MIDISequence {
             this.rhythm = rhythm;
             midiSequence = new Sequence(Sequence.PPQ, rhythm.getBaseUnit()/4);
             track = midiSequence.createTrack();
+            shortMsg = new ShortMessage();
         }
         catch (InvalidMidiDataException imde){
             System.out.println("MIDI data is invalid!");
@@ -32,16 +34,19 @@ public class MIDISequence {
         try {
             //synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
-            Vector<Integer> noteSequence = new Vector<>(rhythm.getNoteSum()*8);
+            int[] noteSequence = new int[rhythm.getNoteSum()];
+            shortMsg.setMessage(0xC0, 0x00, 0x00);
+            event = new MidiEvent(shortMsg,(long)0);
 
             sequencer.setTempoInBPM(rhythm.getTempo());
-
+            track.add(event);
 
             int noteID=60;
             int velocity=127;
 
+
             for (int i=0; i<rhythm.getNoteSum(); i++){
-                MIDINote currNote=new MIDINote(noteID,rhythm.getRhythmSequence(i),velocity);
+                MIDINote currNote=new MIDINote(noteID,noteSequence[i],velocity);
                 currNote.addNote(track,sequencer);
             }
             sequencer.setSequence(midiSequence);
