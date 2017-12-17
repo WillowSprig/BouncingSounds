@@ -1,6 +1,7 @@
 package midiIF;
 
 import javax.sound.midi.*;
+import java.io.File;
 
 public class MIDITest {
 
@@ -27,9 +28,10 @@ public class MIDITest {
 
     }
 
-    public void main() {
+    public void playSequence() {
 
         try {
+            sequencer.open();
             shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
             event = new MidiEvent(shortMsg,(long)0);
             track.add(event);
@@ -51,7 +53,6 @@ public class MIDITest {
             }
             sequencer.setSequence(midiSequence);
 
-            sequencer.open();
             sequencer.start();
             while(true) {
                 if(sequencer.isRunning()) {
@@ -73,5 +74,16 @@ public class MIDITest {
         { System.out.println("MIDI device unavailable");}
         catch (InvalidMidiDataException imde)
         { System.out.println("Invalid MIDI data");}
+    }
+
+    public void playFile()
+    {
+        File midiFile = new File("/home/teri/testFile.mid");
+
+        if(!midiFile.exists() || midiFile.isDirectory() || !midiFile.canRead()) {
+            System.out.println("Error while trying to read MIDI file!");
+        }
+        MIDISequence sequence = new MIDISequence(midiFile);
+        sequence.play();
     }
 }

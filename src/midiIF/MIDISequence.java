@@ -16,6 +16,25 @@ public class MIDISequence {
     private Track track;
     private MidiEvent event;
     private ShortMessage shortMsg;
+    private File midiFile;
+
+    public MIDISequence(File midiFile){
+        this.midiFile = midiFile;
+        try {
+            synthesizer = MidiSystem.getSynthesizer();
+            sequencer = MidiSystem.getSequencer();
+            sequencer.setSequence(MidiSystem.getSequence(midiFile));
+        }
+        catch (MidiUnavailableException mue){
+            System.out.println("MIDI device is unavailable!");
+        }
+        catch (InvalidMidiDataException imde){
+            System.out.println("MIDI data is invalid!");
+        }
+        catch (IOException ioe){
+            System.out.println("I/O error occured!");
+        }
+    }
 
     public MIDISequence(Rhythm rhythm){
 
@@ -32,7 +51,7 @@ public class MIDISequence {
 
     public void prepare(){
         try {
-            //synthesizer = MidiSystem.getSynthesizer();
+            synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
             int[] noteSequence = rhythm.getRhythmSequenceTicks();
             shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
@@ -61,7 +80,6 @@ public class MIDISequence {
 
     public void play(){
         try {
-            prepare();
             sequencer.open();
             sequencer.start();
             while(true) {
@@ -70,6 +88,7 @@ public class MIDISequence {
                         Thread.sleep(100);
                     }
                     catch(InterruptedException iu) {
+                        System.out.println("Interrupted Exception");
                         break;
                     }
                 } else {
