@@ -1,10 +1,10 @@
 package midiIF;
 
 import javax.sound.midi.*;
-import java.awt.*;
 
 public class MIDITest {
 
+    Synthesizer synth;
     Sequencer sequencer;
     Sequence midiSequence;
     Track track;
@@ -12,14 +12,24 @@ public class MIDITest {
     MidiEvent event;
     int noteNo;
 
-
-    public MIDITest() {
-
+    public MIDITest(){
         try {
+            synth = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
             midiSequence = new Sequence(Sequence.PPQ, 4);
             track = midiSequence.createTrack();
             shortMsg = new ShortMessage();
+        }
+        catch (MidiUnavailableException mue)
+        { System.out.println("MIDI device unavailable");}
+        catch (InvalidMidiDataException imde)
+        { System.out.println("Invalid MIDI data");}
+
+    }
+
+    public void main() {
+
+        try {
             shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
             event = new MidiEvent(shortMsg,(long)0);
             track.add(event);
@@ -30,13 +40,17 @@ public class MIDITest {
                 shortMsg.setMessage(ShortMessage.NOTE_ON, 0, noteNo, 127);
                 event = new MidiEvent(shortMsg, tick);
                 track.add(event);
+                System.out.print(noteNo + "\t");
                 shortMsg.setMessage(ShortMessage.NOTE_OFF, 0, noteNo++, 127);
                 event = new MidiEvent(shortMsg, tick+4);
                 track.add(event);
-                System.out.print(noteNo + '\t');
             }
-
+            System.out.println();
+            for (int i=0; i<track.size(); i++) {
+                System.out.println(track.get(i).getMessage().getStatus());
+            }
             sequencer.setSequence(midiSequence);
+
             sequencer.open();
             sequencer.start();
             while(true) {
