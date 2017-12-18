@@ -23,6 +23,7 @@ public class MIDISequence {
         try {
             synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
+            sequencer.open();
             sequencer.setSequence(MidiSystem.getSequence(midiFile));
         }
         catch (MidiUnavailableException mue){
@@ -53,6 +54,8 @@ public class MIDISequence {
         try {
             synthesizer = MidiSystem.getSynthesizer();
             sequencer = MidiSystem.getSequencer();
+            synthesizer.open();
+            sequencer.open();
             int[] noteSequence = rhythm.getRhythmSequenceTicks();
             shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
             event = new MidiEvent(shortMsg,(long)0);
@@ -65,8 +68,18 @@ public class MIDISequence {
 
             for (int i=0; i<rhythm.getNoteSum(); i++){
                 currNote.replace(noteID,noteSequence[i],velocity);
-                currNote.addNote(track);
+                currNote.addNoteOn(track);
+                currNote.addNoteOff(track);
             }
+
+//            midiFile = new File("myFile.mid");
+//            try
+//            {
+//                MidiSystem.write(midiSequence, 0, midiFile);
+//            }
+//            catch (IOException e)
+//            { System.out.println("I/O exception occured"); }
+
             sequencer.setSequence(midiSequence);
 
         } //try
@@ -79,8 +92,7 @@ public class MIDISequence {
     }
 
     public void play(){
-        try {
-            sequencer.open();
+            sequencer.setTickPosition((long)0);
             sequencer.start();
             while(true) {
                 if(sequencer.isRunning()) {
@@ -97,10 +109,14 @@ public class MIDISequence {
             } //while
             sequencer.stop();
             sequencer.close();
-        } //try
-        catch (MidiUnavailableException mue){
-            System.out.println("MIDI device is unavailable!");
-        }
+            synthesizer.close();
     }
 
+    public Sequencer getSequencer() {
+        return sequencer;
+    }
+
+    public Sequence getMidiSequence() {
+        return midiSequence;
+    }
 }

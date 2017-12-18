@@ -22,15 +22,15 @@ public class MIDINote{
         this.velocity=velocity;
     }
 
-    public void addNote(Track track) throws InvalidMidiDataException{
+    public void addNoteOn(Track track) throws InvalidMidiDataException {
         msg.setMessage(ShortMessage.NOTE_ON, 0, noteID, velocity);
-        event = new MidiEvent(msg,position);
-        event.setTick(position);
+        event = new MidiEvent(msg, position);
         track.add(event);
+    }
+    public void addNoteOff(Track track) throws InvalidMidiDataException {
         position = position + duration;
         msg.setMessage(ShortMessage.NOTE_OFF, 0, noteID, velocity);
         event = new MidiEvent(msg,position);
-        event.setTick(position);
         track.add(event);
     }
 }

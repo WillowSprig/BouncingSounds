@@ -10,12 +10,16 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Wybierz opcję:\n\t0 - generowanie sekwencji\n\t1 - odtwarzanie z pliku\n");
+        System.out.print("Wybierz opcję:" + "\n\t0 - generowanie sekwencji" + "\n\t1 - odtwarzanie z pliku" + "\n\t2 - odtwarzanie gotowej sekwencji\n");
         int ans = scanner.nextInt();
         if (ans==1) {
             MIDITest test = new MIDITest();
             test.playFile();
-        } else if (ans == 0) {
+        } else if (ans==2) {
+            MIDITest test = new MIDITest();
+            test.playSequenceSynth();
+        }
+        else if (ans == 0) {
             Rhythm rhythm = new Rhythm(16, 3, 4, 60, 0.3, 5);
             rhythm.setRhythmSequence();
             MIDISequence midiSequence = new MIDISequence(rhythm);

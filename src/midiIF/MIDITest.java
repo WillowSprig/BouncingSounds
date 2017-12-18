@@ -2,6 +2,7 @@ package midiIF;
 
 import javax.sound.midi.*;
 import java.io.File;
+import java.util.Stack;
 
 public class MIDITest {
 
@@ -12,6 +13,8 @@ public class MIDITest {
     ShortMessage shortMsg;
     MidiEvent event;
     int noteNo;
+    private byte[] bytes;
+    private byte[] bytes1;
 
     public MIDITest(){
         try {
@@ -32,27 +35,39 @@ public class MIDITest {
 
         try {
             sequencer.open();
-            shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
+            //if (!(sequencer instanceof Synthesizer)){
+                synth = MidiSystem.getSynthesizer();
+                Receiver synthRec = synth.getReceiver();
+                Transmitter seqTrans = sequencer.getTransmitter();
+                seqTrans.setReceiver(synthRec);
+            //}
+            synth.open();
+            shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 2, 0);
             event = new MidiEvent(shortMsg,(long)0);
             track.add(event);
-            sequencer.setTempoInBPM(60);
+            synthRec.send(shortMsg,(long)0);
+            sequencer.setTempoInBPM(80);
             noteNo=60;
 
             for (long tick=0; tick<24; tick+=4) {
-                shortMsg.setMessage(ShortMessage.NOTE_ON, 0, noteNo, 127);
+                shortMsg.setMessage(ShortMessage.NOTE_ON, 2, noteNo, 127);
                 event = new MidiEvent(shortMsg, tick);
                 track.add(event);
-                System.out.print(noteNo + "\t");
-                shortMsg.setMessage(ShortMessage.NOTE_OFF, 0, noteNo++, 127);
+                synthRec.send(shortMsg,tick);
+//                System.out.println(bytes1 + "\t" + event.getTick());
+//                System.out.print(noteNo + "\t");
+                shortMsg.setMessage(ShortMessage.NOTE_OFF, 2, noteNo, 127);
                 event = new MidiEvent(shortMsg, tick+4);
                 track.add(event);
+                synthRec.send(shortMsg,tick);
+                noteNo++;
             }
-            System.out.println();
-            for (int i=0; i<track.size(); i++) {
-                System.out.println(track.get(i).getMessage().getStatus());
-            }
+//            System.out.println();
+//            for (int i=0; i<track.size(); i++) {
+//                System.out.println(track.get(i).getMessage().getStatus());
+//            }
             sequencer.setSequence(midiSequence);
-
+            sequencer.setTickPosition((long)0);
             sequencer.start();
             while(true) {
                 if(sequencer.isRunning()) {
@@ -68,12 +83,32 @@ public class MIDITest {
             } //while
             sequencer.stop();
             sequencer.close();
-
+            synth.close();
         }
         catch (MidiUnavailableException mue)
         { System.out.println("MIDI device unavailable");}
         catch (InvalidMidiDataException imde)
         { System.out.println("Invalid MIDI data");}
+    }
+
+    public void playSequenceSynth() {
+        try {
+            synth = MidiSystem.getSynthesizer();
+            synth.open();
+
+            MidiChannel channel[] = synth.getChannels();
+
+            if (channel[0] != null) {
+                channel[0].noteOn(60,127);
+               Thread.sleep(2000);
+                channel[0].noteOn(60,0);
+            }
+            synth.close();
+        }
+        catch (MidiUnavailableException mue)
+        { mue.printStackTrace(); }
+        catch (InterruptedException ie)
+        { ie.printStackTrace(); }
     }
 
     public void playFile()
@@ -84,6 +119,7 @@ public class MIDITest {
             System.out.println("Error while trying to read MIDI file!");
         }
         MIDISequence sequence = new MIDISequence(midiFile);
+        sequence.getSequencer().setTempoInBPM(80);
         sequence.play();
     }
 }
