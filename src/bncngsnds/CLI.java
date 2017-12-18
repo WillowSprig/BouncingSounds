@@ -20,14 +20,14 @@ public class CLI implements UI{
 
     @Override
     public Rhythm setRhythmParams() {
-        while (!rhythmVals.contains(rhythm[2])) {
-            System.out.println("Podaj metrum - glowna miare: ");
-            rhythm[2] = scanner.nextInt();
-        }
-
         while (rhythm[1]<=0 || rhythm[1]>10) {
             System.out.println("Podaj metrum - liczbe miar w takcie: ");
             rhythm[1] = scanner.nextInt();
+        }
+
+        while (!rhythmVals.contains(rhythm[2])) {
+            System.out.println("Podaj metrum - glowna miare: ");
+            rhythm[2] = scanner.nextInt();
         }
 
         while (!this.rhythmVals.contains(rhythm[0])) {
@@ -45,16 +45,16 @@ public class CLI implements UI{
             rhythm[4] = scanner.nextInt();
         }
 
-            while (ans < 0 || ans > 1) {
-                try {
-                    System.out.println("Podaj prawdopodobienstwo : ");
-                    ans = scanner.nextDouble();
-                } catch (InputMismatchException ime) {
-                    System.out.println("Uzyj przecinka jako separatora dziesietnego");
-                    ans = -1;
-                    scanner = new Scanner(System.in);
-                }
+        while (ans < 0 || ans > 1) {
+            try {
+                System.out.println("Podaj prawdopodobienstwo : ");
+                ans = scanner.nextDouble();
+            } catch (InputMismatchException ime) {
+                System.out.println("Uzyj przecinka jako separatora dziesietnego");
+                ans = -1;
+                scanner = new Scanner(System.in);
             }
+        }
 
         System.out.println();
         return new Rhythm(rhythm[0], rhythm[1], rhythm[2], rhythm[3], ans, rhythm[4]);

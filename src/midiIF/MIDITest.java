@@ -2,6 +2,7 @@ package midiIF;
 
 import javax.sound.midi.*;
 import java.io.File;
+import java.util.Scanner;
 
 public class MIDITest {
 
@@ -110,13 +111,24 @@ public class MIDITest {
 
     public void playFile()
     {
-        File midiFile = new File("/home/teri/testFile.mid");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Podaj sciezke do pliku midi: ");
+        String path = scanner.nextLine();
+        File midiFile = new File(path);
 
         if(!midiFile.exists() || midiFile.isDirectory() || !midiFile.canRead()) {
             System.out.println("Error while trying to read MIDI file!");
         }
+
+        int tempo=0;
+        while (tempo<=0) {
+            System.out.println("Podaj tempo ");
+            tempo = scanner.nextInt();
+        }
+
         MIDISequence sequence = new MIDISequence(midiFile);
-        sequence.getSequencer().setTempoInBPM(80);
+        sequence.getSequencer().setTempoInBPM(tempo);
+        System.out.println("Playing file " + path + "...");
         sequence.play();
     }
 }

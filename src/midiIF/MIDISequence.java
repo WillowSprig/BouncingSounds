@@ -65,7 +65,7 @@ public class MIDISequence {
 
     public void playSynth(){
         try {
-            int noteID=80; //setting instrument on percussion channel
+            int noteID=80;
             int velocity=127;
             long[] durations = rhythm.getRhythmSequenceMSec();
             if (channel != null) {

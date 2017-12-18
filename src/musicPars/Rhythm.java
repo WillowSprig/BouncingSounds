@@ -10,7 +10,6 @@ public class Rhythm {
     private int numOfBars;
     private TimeSign currTimeSign;
     private int tempo;
-    //private int rhythmSeqLength;
     private Vector<Integer> rhythmSequence;
     private int baseUnit;
     private int noteSum;
@@ -23,7 +22,6 @@ public class Rhythm {
         this.noteProb = noteProb; //note probability
         this.numOfBars = numOfBars;
         currTimeSign = new TimeSign(timeSignT, timeSignB);
-        //rhythmSeqLength = currTimeSign.getTimeSignT()*baseUnit/currTimeSign.getTimeSignB();
         bars = new ArrayList<>(numOfBars);
         Bar bar = new Bar(currTimeSign, 1);
         for (int currBarNo=1; currBarNo<=numOfBars; currBarNo++) {
