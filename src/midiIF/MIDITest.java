@@ -2,19 +2,16 @@ package midiIF;
 
 import javax.sound.midi.*;
 import java.io.File;
-import java.util.Stack;
 
 public class MIDITest {
 
-    Synthesizer synth;
-    Sequencer sequencer;
-    Sequence midiSequence;
-    Track track;
-    ShortMessage shortMsg;
-    MidiEvent event;
-    int noteNo;
-    private byte[] bytes;
-    private byte[] bytes1;
+    private Synthesizer synth;
+    private Sequencer sequencer;
+    private Sequence midiSequence;
+    private Track track;
+    private ShortMessage shortMsg;
+    private MidiEvent event;
+    private int noteNo;
 
     public MIDITest(){
         try {

@@ -5,7 +5,6 @@ import musicPars.Rhythm;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
 
 public class MIDISequence {
 
@@ -18,7 +17,6 @@ public class MIDISequence {
     private ShortMessage shortMsg;
     private File midiFile;
     private MidiChannel channel;
-    private MIDINote currNote;
 
     public MIDISequence(File midiFile){
         this.midiFile = midiFile;
@@ -58,6 +56,7 @@ public class MIDISequence {
             synthesizer.open();
             MidiChannel chans[] = synthesizer.getChannels();
             channel = chans[0];
+            channel.programChange(115); //setting instrument: woodblock
         }
         catch (MidiUnavailableException mue){
             System.out.println("MIDI device is unavailable!");
@@ -66,12 +65,12 @@ public class MIDISequence {
 
     public void playSynth(){
         try {
-            int noteID=60;
+            int noteID=80; //setting instrument on percussion channel
             int velocity=127;
             long[] durations = rhythm.getRhythmSequenceMSec();
             if (channel != null) {
                 for (int i=0; i<rhythm.getNoteSum(); i++) {
-                    System.out.print(noteID + "\t");
+                    System.out.print("tam" + "\t");
                     channel.noteOn(noteID, velocity);
                     Thread.sleep(durations[i]);
                     channel.noteOff(noteID);
@@ -85,47 +84,47 @@ public class MIDISequence {
     }
 
 
-    public void prepare(){
-        try {
-            synthesizer = MidiSystem.getSynthesizer();
-            sequencer = MidiSystem.getSequencer();
-            synthesizer.open();
-            sequencer.open();
-            int[] noteSequence = rhythm.getRhythmSequenceTicks();
-            shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
-            event = new MidiEvent(shortMsg,(long)0);
-            track.add(event);
-            sequencer.setTempoInBPM(rhythm.getTempo());
-
-            int noteID=60;
-            int velocity=127;
-            MIDINote currNote=new MIDINote();
-
-            for (int i=0; i<rhythm.getNoteSum(); i++){
-                currNote.replace(noteID,noteSequence[i],velocity);
-                currNote.addNoteOn(track);
-                currNote.addNoteOff(track);
-            }
-
-//            midiFile = new File("myFile.mid");
-//            try
-//            {
-//                MidiSystem.write(midiSequence, 0, midiFile);
+//    public void prepare(){
+//        try {
+//            synthesizer = MidiSystem.getSynthesizer();
+//            sequencer = MidiSystem.getSequencer();
+//            synthesizer.open();
+//            sequencer.open();
+//            int[] noteSequence = rhythm.getRhythmSequenceTicks();
+//            shortMsg.setMessage(ShortMessage.PROGRAM_CHANGE, 0, 0);
+//            event = new MidiEvent(shortMsg,(long)0);
+//            track.add(event);
+//            sequencer.setTempoInBPM(rhythm.getTempo());
+//
+//            int noteID=60;
+//            int velocity=127;
+//            MIDINote currNote=new MIDINote();
+//
+//            for (int i=0; i<rhythm.getNoteSum(); i++){
+//                currNote.replace(noteID,noteSequence[i],velocity);
+//                currNote.addNoteOn(track);
+//                currNote.addNoteOff(track);
 //            }
-//            catch (IOException e)
-//            { System.out.println("I/O exception occured"); }
-
-            sequencer.setSequence(midiSequence);
-
-        } //try
-        catch (MidiUnavailableException mue){
-            System.out.println("MIDI device is unavailable!");
-        }
-        catch (InvalidMidiDataException imde){
-            System.out.println("MIDI data is invalid!");
-        }
-    }
-
+//
+////            midiFile = new File("myFile.mid");
+////            try
+////            {
+////                MidiSystem.write(midiSequence, 0, midiFile);
+////            }
+////            catch (IOException e)
+////            { System.out.println("I/O exception occured"); }
+//
+//            sequencer.setSequence(midiSequence);
+//
+//        } //try
+//        catch (MidiUnavailableException mue){
+//            System.out.println("MIDI device is unavailable!");
+//        }
+//        catch (InvalidMidiDataException imde){
+//            System.out.println("MIDI data is invalid!");
+//        }
+//    }
+//
     public void play(){
             sequencer.setTickPosition((long)0);
             sequencer.start();

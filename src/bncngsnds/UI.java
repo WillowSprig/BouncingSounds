@@ -1,9 +1,10 @@
 package bncngsnds;
 
+import musicPars.Rhythm;
+
 public interface UI {
-    void setRhythmParams();
+    Rhythm setRhythmParams();
     //void setMelodyParams();
-    void getRhythmParams();
     //void getMelodyParams();
 //    void setProbabs();
 }

@@ -20,8 +20,9 @@ public class Main {
             test.playSequenceSynth();
         }
         else if (ans == 0) {
-            Rhythm rhythm = new Rhythm(16, 3, 4, 60, 0.3, 5);
-            rhythm.setRhythmSequence();
+            CLI cli = new CLI();
+            Rhythm rhythm = cli.setRhythmParams();
+            rhythm.randomiseRhythmSequence();
             MIDISequence midiSequence = new MIDISequence(rhythm);
             midiSequence.prepareSynth();
             midiSequence.playSynth();
