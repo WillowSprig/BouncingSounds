@@ -55,12 +55,12 @@ public class Rhythm {
         } //for
     }
 
-    public double[] getRhythmSequenceSec() {
-        double[] rhythmSeqSec = new double[noteSum];
+    public long[] getRhythmSequenceMSec() {
+        long[] rhythmSeqSec = new long[noteSum];
         int j = noteSum-1, sumBeats = 0;
         for (int i=rhythmSequence.size()-1; i>=0; i--){
             if (rhythmSequence.get(i) == 1){
-                rhythmSeqSec[j--] = sumBeats * 60 / tempo;
+                rhythmSeqSec[j--] = Math.round(sumBeats * 6000 / tempo);
                 sumBeats = 1;
             }
             else

@@ -23,8 +23,8 @@ public class Main {
             Rhythm rhythm = new Rhythm(16, 3, 4, 60, 0.3, 5);
             rhythm.setRhythmSequence();
             MIDISequence midiSequence = new MIDISequence(rhythm);
-            midiSequence.prepare();
-            midiSequence.play();
+            midiSequence.prepareSynth();
+            midiSequence.playSynth();
         }
         else {
             System.out.println("Incorrect input");

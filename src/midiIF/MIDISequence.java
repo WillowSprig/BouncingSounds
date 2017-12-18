@@ -17,6 +17,8 @@ public class MIDISequence {
     private MidiEvent event;
     private ShortMessage shortMsg;
     private File midiFile;
+    private MidiChannel channel;
+    private MIDINote currNote;
 
     public MIDISequence(File midiFile){
         this.midiFile = midiFile;
@@ -49,6 +51,39 @@ public class MIDISequence {
             System.out.println("MIDI data is invalid!");
         }
     }
+
+    public void prepareSynth(){
+        try {
+            synthesizer = MidiSystem.getSynthesizer();
+            synthesizer.open();
+            MidiChannel chans[] = synthesizer.getChannels();
+            channel = chans[0];
+        }
+        catch (MidiUnavailableException mue){
+            System.out.println("MIDI device is unavailable!");
+        }
+    }
+
+    public void playSynth(){
+        try {
+            int noteID=60;
+            int velocity=127;
+            long[] durations = rhythm.getRhythmSequenceMSec();
+            if (channel != null) {
+                for (int i=0; i<rhythm.getNoteSum(); i++) {
+                    System.out.print(noteID + "\t");
+                    channel.noteOn(noteID, velocity);
+                    Thread.sleep(durations[i]);
+                    channel.noteOff(noteID);
+                }
+            }
+            System.out.println();
+            synthesizer.close();
+        }
+        catch (InterruptedException ie)
+        { ie.printStackTrace(); }
+    }
+
 
     public void prepare(){
         try {
